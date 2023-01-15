@@ -1,5 +1,19 @@
+using Customer.Web.Product.Services;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Configure the HTTP request pipeline.
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddTransient<IProductServices, FakeProductServices>();
+}
+else
+{
+    builder.Services.AddHttpClient<IProductServices, ProductServices>();
+}
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
