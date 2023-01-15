@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Customer.Web.DTOs.OrderDto>
+﻿@model IEnumerable<Customer.Web.DTOs.ReviewDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OrderId)
+                @Html.DisplayNameFor(model => model.ReviewId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmailAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryAddress)
+                @Html.DisplayNameFor(model => model.Rating)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -37,19 +31,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.OrderId)
+                @Html.DisplayFor(modelItem => item.ReviewId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CustomerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                @Html.DisplayFor(modelItem => item.Rating)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
