@@ -1,20 +1,54 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Customer.Web.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Customer.Web.Controllers
 {
     public class ReviewsController : Controller
     {
-        // GET: ReviewsController
-        public ActionResult Index()
+        HttpClient client;
+
+        public ReviewsController()
         {
-            return View();
+            client = new HttpClient();
+            client.BaseAddress = new System.Uri("https://localhost:7066/");
+            client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
+        }
+
+        // GET: ReviewsController
+        public async Task<ActionResult> Index()
+        {
+            IEnumerable<ReviewDto> reviews = new List<ReviewDto>();
+
+            HttpResponseMessage response = await client.GetAsync("api/Reviews");
+            if (response.IsSuccessStatusCode)
+            {
+                reviews = await response.Content.ReadAsAsync<IEnumerable<ReviewDto>>();
+            }
+            else
+            {
+                Debug.WriteLine("Index received a bad response from the web service.");
+            }
+            return View(reviews.ToList());
         }
 
         // GET: ReviewsController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            ReviewDto review = new ReviewDto();
+
+            HttpResponseMessage response = await client.GetAsync("api/Reviews/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                review = await response.Content.ReadAsAsync<ReviewDto>();
+            }
+            else
+            {
+                Debug.WriteLine("Details received a bad response from the web service.");
+                return NotFound();
+            }
+            return View(review);
         }
 
         // GET: ReviewsController/Create
@@ -26,57 +60,92 @@ namespace Customer.Web.Controllers
         // POST: ReviewsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(ReviewDto review)
         {
-            try
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/Reviews", review);
+            if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                Debug.WriteLine("Create received a bad response from the web service.");
             }
+            return View(review);
         }
 
         // GET: ReviewsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            ReviewDto review = new ReviewDto();
+
+            HttpResponseMessage response = await client.GetAsync("api/Reviews/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                review = await response.Content.ReadAsAsync<ReviewDto>();
+            }
+            else
+            {
+                Debug.WriteLine("Edit received a bad response from the web service.");
+                return NotFound();
+            }
+            return View(review);
         }
 
         // POST: ReviewsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, ReviewDto review)
         {
-            try
+            if (id != review.ReviewId)
+            {
+                return NotFound();
+            }
+
+            HttpResponseMessage response = await client.PutAsJsonAsync("api/Reviews/" + id, review);
+            if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                Debug.WriteLine("Edit received a bad response from the web service.");
             }
+            return View(review);
         }
 
         // GET: ReviewsController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            ReviewDto review = new ReviewDto();
+
+            HttpResponseMessage response = await client.GetAsync("api/Reviews/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                review = await response.Content.ReadAsAsync<ReviewDto>();
+            }
+            else
+            {
+                Debug.WriteLine("Delete received a bad response from the web service.");
+                return NotFound();
+            }
+            return View(review);
         }
 
         // POST: ReviewsController/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            HttpResponseMessage response = await client.DeleteAsync("api/Reviews/" + id);
+            if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                Debug.WriteLine("Delete received a bad response from the web service.");
+                return BadRequest();
             }
         }
     }
