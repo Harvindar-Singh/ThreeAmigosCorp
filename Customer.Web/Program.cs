@@ -1,19 +1,24 @@
+using Auth0.AspNetCore.Authentication;
 using Customer.Web.Product.Services;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Configure the HTTP request pipeline.
-if (builder.Environment.IsDevelopment())
+if (builder.Configuration.GetValue<bool>("Product:Services:UseFake", false))
 {
     builder.Services.AddTransient<IProductServices, FakeProductServices>();
 }
 else
 {
-    builder.Services.AddHttpClient<IProductServices, ProductServices>();
+    builder.Services.AddHttpClient<ProductServices>();
+    builder.Services.AddTransient<IProductServices, ProductServices>();
 }
+
+builder.Services.AddAuth0WebAppAuthentication(options => {
+    options.Domain = builder.Configuration["Auth:Domain"];
+    options.ClientId = builder.Configuration["Auth:ClientId"];
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
