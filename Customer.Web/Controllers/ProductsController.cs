@@ -12,7 +12,7 @@ public class ProductsController : Controller
     private readonly ILogger _logger;
     private readonly IProductServices _productsService;
 
-    public ProductsController(ILogger<ReviewsController> logger,
+    public ProductsController(ILogger<ProductsController> logger,
                              IProductServices productsService)
     {
         _logger = logger;
