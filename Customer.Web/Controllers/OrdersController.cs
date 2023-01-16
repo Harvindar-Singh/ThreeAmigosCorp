@@ -61,7 +61,7 @@ namespace Customer.Web.Controllers
         // POST: OrdersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(OrderDto orders)
+        public async Task<ActionResult> Create([Bind("OrderId,ProductId,CustomerId,EmailAddress,DeliveryAddress,Description ")]OrderDto orders)
         {
             HttpResponseMessage response = await client.PostAsJsonAsync("api/Orders", orders);
             if (response.IsSuccessStatusCode)

@@ -51,9 +51,9 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.ActionLink("Change Details", "Edit", new {  id=item.OrderId}) |
-                @Html.ActionLink("Details", "Details", new { id=item.OrderId  }) |
-                @Html.ActionLink("Cancel Order", "Delete", new { id=item.OrderId  })
+                <a asp-action="Edit" asp-route-id="@item.OrderId">Change Details</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OrderId">Cancel Order</a>
             </td>
         </tr>
 }
