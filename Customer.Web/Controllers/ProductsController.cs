@@ -19,8 +19,8 @@ public class ProductsController : Controller
         _productsService = productsService;
     }
 
-    // GET: /reviews/
-    public async Task<IActionResult> Index([FromQuery] string? subject)
+    // GET: /products
+    public async Task<IActionResult> Index()
     {
         if (!ModelState.IsValid)
         {
@@ -30,7 +30,7 @@ public class ProductsController : Controller
         IEnumerable<ProductDto> products = null;
         try
         {
-            products = await _productsService.GetProductsAsync(subject);
+            products = await _productsService.GetProductsAsync();
         }
         catch
         {

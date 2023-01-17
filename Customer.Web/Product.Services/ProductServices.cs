@@ -7,7 +7,7 @@ namespace Customer.Web.Product.Services
     {
         private readonly HttpClient _client;
 
-        public ProductServices(HttpClient client)
+        public ProductServices(HttpClient client, IConfiguration @object)
 
         {
             client.BaseAddress = new System.Uri("http://localhost:3733/");
@@ -41,45 +41,9 @@ namespace Customer.Web.Product.Services
             return products;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        public Task<IEnumerable<ProductDto>> GetProductsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

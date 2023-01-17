@@ -33,7 +33,9 @@ namespace Customer.Web.Product.Services
             return Task.FromResult(products);
         }
 
-
-
+        public Task<IEnumerable<ProductDto>> GetProductsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
