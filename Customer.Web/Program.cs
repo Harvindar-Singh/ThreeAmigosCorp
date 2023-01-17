@@ -1,9 +1,23 @@
 using Customer.Web.Product.Services;
-
-
+using Auth0.AspNetCore.Authentication;
+using Customer.Web.Services.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Configuration.GetValue<bool>("Services:Values:UseFake", false))
+{
+    builder.Services.AddTransient<IValuesService, FakeValuesService>();
+}
+else
+{
+    builder.Services.AddHttpClient<ValuesService>();  
+    builder.Services.AddTransient<IValuesService, ValuesService>();
+}
+
+builder.Services.AddAuth0WebAppAuthentication(options => {
+    options.Domain = builder.Configuration["Auth:Domain"];
+    options.ClientId = builder.Configuration["Auth:ClientId"];
+});
 
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment())
